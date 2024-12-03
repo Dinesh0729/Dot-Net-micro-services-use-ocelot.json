@@ -1,0 +1,69 @@
+create schema micro;
+CREATE TABLE micro.menu (
+	menuid serial4 NOT NULL,
+	menuname text NULL,
+	menuurl text NULL,
+	menuicon text NULL,
+	menuorder int4 NULL,
+	parentmenu int4 NULL,
+	isactive bool NULL,
+	createdby int4 NULL,
+	createdon timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	modifiedby int4 NULL,
+	modifiedon timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	processprivilege varchar(3) NULL,
+	"type" varchar(50) NULL,
+	CONSTRAINT menu_pkey PRIMARY KEY (menuid)
+);
+
+
+CREATE TABLE micro.modules (
+	moduleid serial4 NOT NULL,
+	modulename varchar(100) NOT NULL,
+	description varchar(250) NULL,
+	createdon timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT modules_pkey PRIMARY KEY (moduleid)
+);
+CREATE TABLE micro.rolemodulepermissions (
+	roleid int4 NOT NULL,
+	moduleid int4 NOT NULL,
+	CONSTRAINT rolemodulepermissions_pkey PRIMARY KEY (roleid, moduleid),
+	CONSTRAINT fk_modules FOREIGN KEY (moduleid) REFERENCES micro.modules(moduleid),
+	CONSTRAINT fk_roles FOREIGN KEY (roleid) REFERENCES micro.roles(roleid)
+);
+CREATE TABLE micro.roles (
+	roleid serial4 NOT NULL,
+	rolename varchar(100) NOT NULL,
+	description varchar(250) NULL,
+	createdon timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT roles_pkey PRIMARY KEY (roleid)
+);
+
+CREATE TABLE micro.usermaster (
+	userid serial4 NOT NULL,
+	firstname varchar(100) NULL,
+	lastname varchar(100) NULL,
+	username varchar(150) NOT NULL,
+	passwordhash varchar(100) NOT NULL,
+	passwordkey varchar(100) NOT NULL,
+	resetkey varchar(100) NULL,
+	emailid varchar(200) NOT NULL,
+	createdby int4 NULL,
+	createdon timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	modifiedby int4 NULL,
+	modifiedon timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	isactive bool NULL,
+	refid int8 NULL,
+	usertype varchar(15) NULL,
+	"token" varchar(400) NULL,
+	CONSTRAINT usermaster_emailid_key UNIQUE (emailid),
+	CONSTRAINT usermaster_pkey PRIMARY KEY (userid),
+	CONSTRAINT usermaster_username_key UNIQUE (username)
+);
+CREATE TABLE micro.userroles (
+	userid int4 NOT NULL,
+	roleid int4 NOT NULL,
+	CONSTRAINT userroles_pkey PRIMARY KEY (userid, roleid),
+	CONSTRAINT fk_roles FOREIGN KEY (roleid) REFERENCES micro.roles(roleid),
+	CONSTRAINT fk_usermaster FOREIGN KEY (userid) REFERENCES micro.usermaster(userid)
+);
