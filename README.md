@@ -1,4 +1,4 @@
-# Dot-Net-micro-services-use-oclot.json
+# Microservice Architecture in ASP.NET Core 8 with Ocelot API Gateway
 A repository for a microservices project using Ocelot for API Gateway functionalities. This project includes integration with Angular, .NET, PostgreSQL,
 # Project Overview
 This repository is for a microservices project using Ocelot for API Gateway functionalities. The project includes integration with Angular, .NET Core API, PostgreSQL, and AWS.
